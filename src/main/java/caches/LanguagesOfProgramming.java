@@ -6,18 +6,18 @@ import java.util.Map;
 @CacheDeclaration(name = "languagesOfProgramming")
 public class LanguagesOfProgramming implements Cache {
 
-    private Map<Integer, String> clients;
+    private Map<Integer, String> languagesOfProgramming;
 
     public LanguagesOfProgramming() {
-        clients = new HashMap<>();
+        languagesOfProgramming = new HashMap<>();
     }
 
     public void put(int key, String value) {
-        clients.put(key, value);
+        languagesOfProgramming.put(key, value);
     }
 
     public String get(int key) {
-        return clients.get(key);
+        return languagesOfProgramming.get(key);
     }
 
 }
