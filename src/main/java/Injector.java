@@ -102,10 +102,10 @@ public class Injector {
             System.out.println(bookShop.getBooks().get().get(1));
 
         if (hotel.getClients().isPresent())
-            System.out.println(bookShop.getBooks().get().get(2));
+            System.out.println(hotel.getClients().get().get(2));
 
-        if (bookShop.getBooks().isPresent())
-            System.out.println(bookShop.getBooks().get().get(3));
+        if (paper.getLanguagesOfProgramming().isPresent())
+            System.out.println(paper.getLanguagesOfProgramming().get().get(3));
     }
 
     public static void main(String[] args) throws IllegalAccessException {
