@@ -67,7 +67,7 @@ public class Injector {
                         try {
                             declaredField.set(ob, cache);
                         } catch (IllegalAccessException e) {
-                            System.out.println("Field" + declaredField + "in class" + obClass + "is private!");
+                            System.out.println(e.getMessage());
                             e.printStackTrace();
                         }
                 }
