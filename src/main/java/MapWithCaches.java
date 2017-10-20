@@ -56,7 +56,6 @@ public class MapWithCaches {
         } catch (ClassNotFoundException | InstantiationException | NoClassDefFoundError | IllegalAccessException e) {
             System.out.println(e);
         }
-
     }
 
     public List<String> getListOfCachesNames() throws IOException {
