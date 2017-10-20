@@ -6,10 +6,10 @@ import java.util.Map;
 @CacheDeclaration(name = "clients")
 public class Clients implements Cache {
 
-    private Map<Integer, String> clients;
+    public Map<Integer, String> clients;
 
     public Clients() {
-        clients = new HashMap<Integer, String>();
+        clients = new HashMap<>();
     }
 
     public void put(int key, String value) {
@@ -18,6 +18,10 @@ public class Clients implements Cache {
 
     public String get(int key) {
         return clients.get(key);
+    }
+
+    public String getFileNameWithData() {
+        return "fileWithClients.txt";
     }
 
 }

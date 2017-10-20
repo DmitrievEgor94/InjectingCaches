@@ -9,7 +9,7 @@ public class Books implements Cache {
     private Map<Integer, String> books;
 
     public Books() {
-        books = new HashMap<Integer, String>();
+        books = new HashMap<>();
     }
 
     public void put(int key, String value) {
@@ -18,6 +18,10 @@ public class Books implements Cache {
 
     public String get(int key) {
         return books.get(key);
+    }
+
+    public String getFileNameWithData() {
+        return "fileWithBooks.txt";
     }
 
 }

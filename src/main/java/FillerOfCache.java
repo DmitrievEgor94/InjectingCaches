@@ -7,22 +7,16 @@ import java.util.Scanner;
 public class FillerOfCache {
     static void fillCache(String fileName, Cache cache) throws FileNotFoundException {
         Scanner scanner = new Scanner(new File(fileName));
-
-        int key = -1;
-        String value = "";
+        scanner.useDelimiter(",");
 
         while (scanner.hasNext()) {
-            String buffer = scanner.next();
+            String currentStringInFile = scanner.nextLine();
 
-            if (buffer.matches("\\d+")) {
-                if (value != "") cache.put(key, value);
+            int key = Integer.parseInt(currentStringInFile.split(",")[0]);
 
-                value = "";
-                key = Integer.parseInt(buffer);
+            String value = currentStringInFile.split(",")[1];
 
-            } else value += buffer + " ";
-
-            if (!scanner.hasNext()) cache.put(key, value);
+            cache.put(key, value);
         }
     }
 }

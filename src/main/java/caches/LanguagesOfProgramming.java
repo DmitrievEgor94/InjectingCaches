@@ -20,4 +20,7 @@ public class LanguagesOfProgramming implements Cache {
         return languagesOfProgramming.get(key);
     }
 
+    public String getFileNameWithData() {
+        return "fileWithLanguagesOfProgramming.txt";
+    }
 }
