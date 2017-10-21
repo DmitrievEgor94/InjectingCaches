@@ -1,16 +1,16 @@
 import caches.Cache;
 import caches.CacheDeclaration;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.URL;
-import java.util.*;
-import java.util.jar.JarEntry;
-import java.util.jar.JarFile;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
 
 public class MapWithCaches {
 
     static private String packageWithCaches = "caches";
-    static private String pathToJarFile = "out/artifacts/InjectingCaches_jar/InjectingCaches.jar";
 
     private Map<String, Cache> cacheList;
 
@@ -20,7 +20,7 @@ public class MapWithCaches {
         try {
             updateCaches();
         } catch (IOException e) {
-            System.out.println("Wrong name of package with caches or wrong path to JarFile!");
+            System.out.println("Wrong name of package with caches!");
         }
     }
 
@@ -31,16 +31,20 @@ public class MapWithCaches {
 
         ClassLoader currentClassLoader = Thread.currentThread().getContextClassLoader();
 
-        URL resource = currentClassLoader.getResource(packageWithCachesPath);
+        URL cachesPath = currentClassLoader.getResource(packageWithCachesPath);
 
-        List<String> cachesNames = getListOfCachesNames();
+        String directoryWithCaches = cachesPath.getPath();
+        String rootDirectory = directoryWithCaches.substring(0, directoryWithCaches.indexOf(packageWithCachesPath));
+
+        File file = new File(cachesPath.getFile());
+
+        String[] cachesNames = Optional.of(file.list()).orElse(new String[0]);
 
         try {
             for (String cache : cachesNames) {
-                String specifiedCachePackage = cache.substring(0, cache.lastIndexOf("."));
-                specifiedCachePackage = specifiedCachePackage.replace("/", ".");
+                String cacheNameWithoutClass = cache.substring(0, cache.lastIndexOf("."));
 
-                Class cacheClass = Class.forName(specifiedCachePackage);
+                Class cacheClass = Class.forName(packageWithCaches + "." + cacheNameWithoutClass);
                 CacheDeclaration cacheDeclarationAnnotation = null;
 
                 if (cacheClass != null)
@@ -49,7 +53,7 @@ public class MapWithCaches {
                 if (cacheDeclarationAnnotation != null) {
                     Cache ob = (Cache) cacheClass.newInstance();
 
-                    FillerOfCache.fillCache(resource.getPath() + "/" + ob.getFileNameWithData(), ob);
+                    FillerOfCache.fillCache(rootDirectory + "/" + ob.getFileNameWithData(), ob);
                     cacheList.put(cacheDeclarationAnnotation.name(), ob);
                 }
             }
@@ -58,19 +62,6 @@ public class MapWithCaches {
         }
     }
 
-    public List<String> getListOfCachesNames() throws IOException {
-        JarFile jarFile = new JarFile(pathToJarFile);
-        Enumeration<JarEntry> entries = jarFile.entries();
-        List<String> cachesNames = new ArrayList<>();
-
-        while (entries.hasMoreElements()) {
-            String cacheName = entries.nextElement().getName();
-            if (cacheName.contains(packageWithCaches) && cacheName.contains(".class"))
-                cachesNames.add(cacheName);
-        }
-
-        return cachesNames;
-    }
 
     public Map<String, Cache> getCacheList() {
         return cacheList;
